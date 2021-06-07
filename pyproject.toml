@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "instacopy"
+version = "0.1.0"
+description = "github@romannovikov Django Pet Project - Copy of Instagram"
+authors = ["romannovikov <novikovr@protonmail.ch>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "3.1.5"
+Pillow = "8.1.0"
+django-unixtimestampfield = "0.4.0"
+easy-thumbnails = "2.7.1"
+django-phonenumber-field = "5.0.0"
+django-image-cropping = "1.5.0"
+django-debug-toolbar = "3.2"
+phonenumbers = "8.12.17"
+psycopg2-binary = "^2.8.6"
+django-allauth = "^0.44.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

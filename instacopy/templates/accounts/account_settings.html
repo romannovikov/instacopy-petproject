@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-mobile has-text-centered">
+                <div class="column is-half is-offset-one-quarter">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3 class="title is-4">{% trans "Profile settings" %}</h3>
+                            <form method="post"  enctype="multipart/form-data" action="" role="form">
+                                {% csrf_token %}
+                                <div class="field">
+                                    <p class="control">{% trans "Profile photo" %}: </p>
+                                    <div class="control">
+                                        <div class="file is-centered">
+                                            <label class="file-label">
+                                                {{ form.photo }}
+                                                <span class='file-cta'>
+                                                     <span class="file-label">
+                                                         Choose a file…
+                                                     </span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        {% trans "Website" %}: {{ form.website }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        {% trans "Phone number" %}: {{ form.phone_number }}
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <p class="control">{% trans "Gender" %}: </p>
+                                    <div class="control">
+                                        <div class="select is-rounded">
+                                            {{ form.gender }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        {% trans "Bio" %}: {{ form.bio }}
+                                    </div>
+                                </div>
+                                <button type="submit" class="button is-success is-small">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

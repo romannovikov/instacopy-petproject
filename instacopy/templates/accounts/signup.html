@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-mobile has-text-centered">
+                <div class="column is-half is-offset-one-quarter">
+                    <div class="card">
+                        <div class="card-content">
+                            <form method="post" action="" role="form">
+                                {% csrf_token %}
+                                <h3 class="title is-4">Create an account</h3>
+                                <div class="field">
+                                    <p class="control">
+                                        <label class="label is-medium">Username</label>
+                                        {{ form.username }}
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <p class="control">
+                                        <label class="label is-medium">Full name</label>
+                                        {{ form.full_name }}
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <p class="control">
+                                        <label class="label is-medium">Email</label>
+                                        {{ form.email }}
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <p class="control">
+                                        <label class="label is-medium">Password</label>
+                                        {{ form.password1 }}
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <p class="control ">
+                                        <label class="label is-medium">Confirm password</label>
+                                        {{ form.password2 }}
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <span style="color: red; font-weight: bold;">{{ form.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="field mt-5">
+                                    <p class="control">
+                                        <button type="submit" name="action" class="button is-success is-small">
+                                            Signup
+                                        </button>
+                                    </p>
+                                </div>
+                            </form>
+                            <div class="my-3">
+                                <p class="mt-5">{% trans "Have an account?" %} <a
+                                        href="{% url 'account_login' %}">{% trans "Login" %}</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

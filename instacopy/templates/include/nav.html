@@ -1,0 +1,68 @@
+{% load static %}
+{% load i18n %}
+
+<div class="container is-max-desktop">
+    <nav class="level">
+        <div class="level-item my-3 is-narrow">
+            <a href="/"><img src="{% static 'img/logo.png' %}"></a>
+        </div>
+        <div class="level-item my-3">
+            <div class="field has-addons">
+                <div class="control">
+                    <input class="input is-small" type="text" placeholder="Search">
+                </div>
+                <div class="control">
+                    <button class="button is-small"><a href="#"><i class="fas fa-search"></i></a></button>
+                </div>
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="level-item my-3 is-narrow">
+                <div class="columns is-vcentered">
+                    <div class="column is-narrow">
+                        <nav class="breadcrumb is-small has-bullet-separator" aria-label="breadcrumbs">
+                            <ul class="is-vcentered">
+                                <li><a href="{% url 'post_create' %}">Create post</a></li>
+                                <li><a href="{% url 'feed' %}">Feed</a></li>
+                                <li><a href="{% url 'blog_page' user.username %}">Profile</a></li>
+                                <li><a href="{% url 'account_settings' %}">Settings</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="column is-narrow">
+                        <a class="button is-danger is-small" href="{% url 'account_logout' %}"
+                           aria-current="page">{% trans "Logout" %}</a>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class='level'>
+        <div class="level-item">
+          <span class="icon is-medium"><a href="/post/create/"><i class="fas fa-lg fa-plus"></i></a></span>
+        </div>
+        <div class="level-item">
+          <span class="icon is-medium"><a href="/"><i class="fas fa-lg fa-home"></i></a></span>
+        </div>
+        <div class="level-item dropdown is-right is-hoverable">
+          <div class="dropdown-trigger">
+            <span class="icon is-medium"><i class="fas fa-lg fa-user-circle"></i></span>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item" href="/{{ user }}">Profile</a>
+              <hr class="dropdown-divider">
+              <a class="dropdown-item" href="/accounts/logout">Log out</a>
+            </div>
+          </div>
+        </div>
+      </div> -->
+            </div>
+        {% else %}
+            <div class="field">
+                <div class="control">
+                    <a href="{% url 'account_login' %}" class="button is-info is-small">Login</a>
+                    <a href="{% url 'account_signup' %}" class="button is-success is-small">Signup</a>
+                </div>
+            </div>
+        {% endif %}
+</nav>
+</div>

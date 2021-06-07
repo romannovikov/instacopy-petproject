@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load blog_tags %}
+
+
+{% block content %}
+
+    {% include 'include/nav.html' %}
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-two-thirds has-text-centered">
+                    {% if not post_list %}
+                        <div class="my-4">
+                            <p class="title is-2">Your feed is empty.</p>
+                            <br>
+                            <p class="title is-3">Please follow one or more suggested users and reload this page.</p>
+                        </div>
+                    {% endif %}
+                    {% for post in post_list %}
+                        {% include 'include/post_single.html' %}
+                        <br>
+                    {% endfor %}
+                </div>
+                <div class="column fixed">
+                    <div class="card has-text-centered">
+                        <h1 class="title is-4 mt-3 mb-0">Suggested users</h2>
+                            <div class="card-content">
+                                {% for another_user in suggested_users %}
+                                    <div class="columns level">
+                                        <div class="column is-narrow">
+                                            <figure class="image is-48x48 mx-1">
+                                                {% if another_user.profile.photo %}
+                                                    <img class="is-rounded" src="{{ another_user.profile.photo.url }}"
+                                                         alt="Placeholder image">
+                                                {% else %}
+                                                    <img class="is-rounded"
+                                                         src="https://bulma.io/images/placeholders/128x128.png">
+                                                {% endif %}
+                                            </figure>
+                                        </div>
+                                        <div class="column">
+                                            <p class="title is-6">{{ another_user.full_name }}</p>
+                                            <p class="subtitle is-7"><a
+                                                    href="{{ another_user.profile.get_absolute_url }}">@{{ another_user.username }}</a>
+                                            </p>
+                                        </div>
+                                        <div class="column is-narrow">
+
+                                            {% if not current_user_page and user.is_authenticated %}
+
+                                                {% if another_user.id in followed_by_user %}
+                                                    {% define True as is_followed %}
+                                                {% else %}
+                                                    {% define False as is_followed %}
+                                                {% endif %}
+
+                                                <form class="follow-form" id="follow-form-{{ another_user.id }}"
+                                                      action="{{ another_user.get_follow_url }}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="data-followed-id"
+                                                           value="{{ another_user.id }}">
+                                                    <input type="hidden" name="data-is-followed"
+                                                           value="{{ is_followed }}">
+                                                    {% if is_followed %}
+                                                        <button type="submit"
+                                                                class="button is-info is-light is-small follow-btn"
+                                                                id="follow-btn-{{ another_user.id }}">Unfollow
+                                                        </button>
+                                                    {% else %}
+                                                        <button type="submit" class="button is-info is-small follow-btn"
+                                                                id="follow-btn-{{ another_user.id }}">Follow
+                                                        </button>
+                                                    {% endif %}
+                                                </form>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

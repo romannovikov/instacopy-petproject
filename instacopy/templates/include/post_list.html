@@ -1,0 +1,9 @@
+<div class="columns is-multiline is-mobile is-centered">
+    {% for post in post_list %}
+        <div class="column is-one-third p-5">
+            <a href="{{ post.get_absolute_url }}">
+                <img src="{{ post.media.url }}" alt="Placeholder image">
+            </a>
+        </div>
+    {% endfor %}
+</div>

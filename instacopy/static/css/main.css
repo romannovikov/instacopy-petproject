@@ -1,0 +1,31 @@
+.black-link {
+    color: #4a4a4a !important;
+}
+
+.btn {
+    background-color: white !important;
+    padding: 0;
+    border: 0px;
+}
+
+.btn:focus, .btn:active {
+    box-shadow: none !important;
+}
+
+.is-192x192 {
+    width: 192px;
+    height: 192px;
+}
+
+.fixed {
+    height: 50px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 20px;
+}
+
+.noshadow {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}

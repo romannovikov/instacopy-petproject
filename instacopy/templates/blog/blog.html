@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load cropping %}
+
+{% block content %}
+
+    {% include 'include/nav.html' %}
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-mobile is-vcentered">
+                <div class="column is-narrow mx-6">
+                    <figure class="image is-192x192">
+                        {% if blog_user.profile.photo %}
+                            <img class="is-rounded" src="{{ blog_user.profile.photo.url }}">
+                        {% else %}
+                            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                        {% endif %}
+                    </figure>
+                </div>
+                <div class="column is-half mx-4">
+                    <div class="columns is-multiline is-vcentered">
+                        <div class="column is-narrow">
+                            <h1 class="title is-3">{{ blog_user.username }}</h1>
+                        </div>
+                        <div class="column is-half">
+                            {% if not current_user_page and user.is_authenticated %}
+                                <form class="follow-form" id="follow-form-{{ blog_user.id }}"
+                                      action="{{ blog_user.get_follow_url }}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="data-followed-id" value="{{ blog_user.id }}">
+                                    <input type="hidden" name="data-is-followed" value="{{ is_followed }}">
+                                    {% if is_followed %}
+                                        <button type="submit" class="button is-info is-light is-6 follow-btn"
+                                                id="follow-btn-{{ blog_user.id }}">Unfollow
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="button is-info is-6 follow-btn"
+                                                id="follow-btn-{{ blog_user.id }}">Follow
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            {% endif %}
+                        </div>
+                        <div class="column is-two-thirds">
+                            <nav class="level is-mobile">
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                        <p><strong>{{ post_list.count }}</strong> posts</p>
+                                    </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                    <div id='follower-counter-{{ blog_user.id }}' data-follower-count=
+                                            {{ blog_user.user_is_followed.count|add:"-1" }}>
+                                        <p><strong>{{ blog_user.user_is_followed.count|add:"-1" }}</strong> followers
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                        <p><strong>{{ blog_user.user_is_follower.count|add:"-1" }}</strong> following
+                                        </p>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                        {% if current_user.profile.full_name %}
+                            <div class="column is-full">
+                                <h5 class="title is-5">{{ blog_user.profile.full_name }}</h5>
+                            </div>
+                        {% endif %}
+                        <div class="column is-full">
+                            <p>{{ blog_user.profile.bio }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            {% if current_user_page and post_list %}
+                <div class="my-1 is-medium">
+                    <p class="panel-tabs">
+                        <a class="is-active"><strong>POSTS</strong></a>
+                        <a><strong>SAVED</strong></a>
+                    </p>
+                </div>
+                <br/>
+            {% endif %}
+            {% if not post_list %}
+                <div class="columns is-multiline is-mobile is-centered">
+                    <div class="my-4">
+                        <p class="title is-2">Your blog is empty.</p>
+                        <br>
+                        <p class="title is-3">You can create your first post <a
+                                    href="{% url 'post_create' %}">here</a>.</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% include 'include/post_list.html' %}
+        </div>
+    </section>
+
+{% endblock %}
