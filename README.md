@@ -76,6 +76,7 @@ https://github.com/romannovikov/instacopy-petproject.git
 # сборка Docker-сервиса
 docker-compose build
 # создание исходных таблиц в БД
+docker-compose run --rm app python manage.py makemigrations
 docker-compose run --rm app python manage.py migrate
 # создание тестовых моделей и заполнение таблиц тестовыми данными
 docker-compose run --rm app python manage.py createinitialdata
