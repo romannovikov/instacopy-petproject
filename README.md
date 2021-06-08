@@ -69,7 +69,7 @@ git init
 ```
 - Скопируйте репозиторий проекта в созданную директорию:
 ```bash
-git pull https://github.com/romannovikov/orange_churn_project.git
+https://github.com/romannovikov/instacopy-petproject.git
 ```
 - Настройте и запустите проект с помощью docker-compose:
 ```bash
