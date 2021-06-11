@@ -1,5 +1,14 @@
 # Instacopy
 
+## Используемый стэк технологий
+
+- Python >= 3.8
+- Poetry = 0.1.0
+- Django = 3.1.5
+- PostgreSQL = 13.3
+- Docker = 20.10
+- HTML5, CSS3, Javascript, JQuery, AJAX
+
 ## Описание проекта
 
 Данный pet-project представляет собой фотоблог с Instagram-подобным функционалом, реализованным с помощью Django.
@@ -89,15 +98,6 @@ docker-compose up
 ERROR: Service 'app' failed to build : Build failed" при сборке Docker-образа необходимо запустить все 
 вышеописанные команды c правами суперпользователя. Это связано с тем, что docker-compose, в зависимости от своих настроек, может создать папку
 с БД от имени суперпользователя.
-
-## Используемый стэк технологий
-
-- Python >= 3.8
-- Poetry = 0.1.0
-- Django = 3.1.5
-- PostgreSQL = 13.3
-- Docker = 20.10
-- HTML5, CSS3, Javascript, JQuery, AJAX
 
 
 ## Структура проекта
