@@ -7,7 +7,7 @@
 - Django = 3.1.5
 - PostgreSQL = 13.3
 - Docker = 20.10
-- HTML5, CSS3, Javascript, JQuery, AJAX
+- Frontend: HTML5, CSS3, Bulma, Javascript, JQuery, AJAX;
 
 ## Описание проекта
 
