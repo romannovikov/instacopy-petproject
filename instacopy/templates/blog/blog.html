@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load cropping %}
 
 {% block content %}
 
@@ -72,6 +71,9 @@
                         {% endif %}
                         <div class="column is-full">
                             <p>{{ blog_user.profile.bio }}</p>
+                        </div>
+                        <div class="column is-full">
+                            <a href="{{ blog_user.profile.website }}">{{ blog_user.profile.website }}</a>
                         </div>
                     </div>
                 </div>

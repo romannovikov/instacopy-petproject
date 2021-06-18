@@ -128,4 +128,3 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog_page', kwargs={'username': self.user.username})
-

@@ -1,0 +1,88 @@
+###########
+# BUILDER #
+###########
+
+# Pull official base image
+FROM python:3.8-slim-buster as builder
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV POETRY_VERSION=1.1.6
+
+# Set work directory
+WORKDIR /usr/src/app
+
+# Install dependencies
+RUN apt-get update \
+  && apt-get install -y netcat gcc python3-dev musl-dev
+
+# Lint
+RUN pip install --upgrade pip
+RUN pip install flake8
+COPY . .
+RUN flake8 --ignore=E501,F401 .
+
+# Install poetry
+RUN pip install "poetry==$POETRY_VERSION"
+
+# Copy poetry files to cache them in docker layer
+COPY poetry.lock pyproject.toml ./
+
+# Export the lock file to requirements.txt format
+RUN poetry export --output requirements.txt
+
+# Create wheels
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+
+#########
+# FINAL #
+#########
+
+# Pull official base image
+FROM python:3.8-slim-buster
+
+# create directory for "app" user
+ENV HOME=/home/app
+RUN mkdir -p $HOME
+
+# Create "app" user
+RUN groupadd appgroup && \
+	useradd -g appgroup app
+
+# Create directories for webapp, staticfiles & mediafiles
+ENV APP_DIR=/home/app/web
+RUN mkdir -p $APP_DIR/static
+RUN mkdir -p $APP_DIR/media
+WORKDIR $APP_DIR
+
+# install dependencies
+RUN apt-get update && apt-get install -y libpq-dev netcat
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+RUN pip install --no-cache /wheels/*
+
+# copy entrypoint-prod.sh
+COPY entrypoint.prod.sh $APP_DIR
+
+# copy project
+COPY apps ./apps/
+COPY config ./config/
+COPY media ./media/
+COPY static ./static/
+COPY templates ./templates/
+COPY manage.py .
+
+# chown static & media permissions to appuser
+RUN chgrp -R appgroup $APP_DIR/static && \
+    chmod -R 760 $APP_DIR/static && \
+	chgrp -R appgroup $APP_DIR/media && \
+    chmod -R 760 $APP_DIR/media
+
+# change to the app user
+USER app
+
+# run entrypoint.prod.sh
+RUN ls
+ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]

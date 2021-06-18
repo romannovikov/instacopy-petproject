@@ -93,6 +93,7 @@ class Feed(models.Model):
     def __str__(self):
         return f'@{self.user.username} Feed object'  # ???
 
+
 class Follow(models.Model):
     follower = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_is_follower'

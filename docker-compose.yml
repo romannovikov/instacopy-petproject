@@ -1,26 +1,22 @@
 version: "3.9"
 
 services:
-  app:
-    build:
-      dockerfile: ./Dockerfile
-      context: .
+  web:
+    build: ./instacopy
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./instacopy:/app
     ports:
-      - "8000:8000"
+      - 8000:8000
+    env_file:
+      - ./.env.dev
     depends_on:
       - db
-
   db:
-    image: postgres
-    environment:
-      POSTGRES_DB: instacopy
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      PGDATA: /var/lib/postgresql/data/pgdata
+    image: postgres:12.6
     volumes:
-      - ./data/pgdata:/var/lib/postgresql/data/pgdata
+      - ./postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env.dev.db
     ports:
       - 5432:5432

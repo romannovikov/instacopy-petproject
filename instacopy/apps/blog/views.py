@@ -175,7 +175,6 @@ class SavedToggleView(View):
     def post(self, request, slug):
         if self.request.is_ajax():
             data = json.loads(request.POST['json_data'])
-            object_id = data.get("object_id")
             is_saved = data.get("is_saved")
 
             user = request.user
@@ -200,7 +199,6 @@ class LikeToggleView(View):
         if self.request.is_ajax():
             data = json.loads(request.POST['json_data'])
             object_content_type = data.get("object_content_type")
-            object_id = data.get("object_id")
             is_liked = data.get("is_liked")
             user = request.user
             if object_content_type == 'post':

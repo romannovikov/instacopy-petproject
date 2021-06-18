@@ -28,7 +28,7 @@ class UserLoginForm(LoginForm):
 class ProfileSettingsForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('photo',  'website', 'phone_number', 'gender', 'bio',)
+        fields = ('photo', 'website', 'phone_number', 'gender', 'bio',)
         widgets = {
             'photo': forms.FileInput(attrs={'class': 'file-input'}),
             'bio': forms.Textarea(attrs={'class': 'textarea is-small', 'rows': '5'}),

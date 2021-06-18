@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,12 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'h#f3p)ll(&zc3rgp_vg5eij0hljc7-ioy=b*=l9$ttu!qykr7+'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = int(os.getenv('DJANGO_DEBUG', default=0))
 
 # Application definition
 
@@ -42,8 +43,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'debug_toolbar',
     'phonenumber_field',
-    'easy_thumbnails',
-    'image_cropping',
     # my apps
     'apps.blog',
     'apps.accounts',
@@ -81,21 +80,22 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-ALLOWED_HOSTS = ['0.0.0.0', ]
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split(',')
 INTERNAL_IPS = ['127.0.0.1', ]
 SITE_ID = 1
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'instacopy',
-        'USER': 'user',
-        'PASSWORD': 'password',
-        'HOST': 'db',
-        'PORT': 5432,
+        'ENGINE': os.getenv('DB_ENGINE', default="django.db.backends.sqlite3"),
+        'NAME': os.getenv('DB_NAME', default="db.sqlite3"),
+        'USER': os.getenv('DB_USER', default="user"),
+        'PASSWORD': os.getenv('DB_PASSWORD', default="password"),
+        'HOST': os.getenv('DB_HOST', default="localhost"),
+        'PORT': os.getenv('DB_PORT', default="5432"),
     }
 }
 

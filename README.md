@@ -2,12 +2,22 @@
 
 ## Используемый стэк технологий
 
+Backend:
 - Python >= 3.8
 - Poetry = 0.1.0
 - Django = 3.1.5
-- PostgreSQL = 13.3
+- PostgreSQL = 12.6
+
+Frontend: 
+- HTML5, CSS3, Bulma;
+- Javascript, JQuery, AJAX;
+
+Deployment:
 - Docker = 20.10
-- Frontend: HTML5, CSS3, Bulma, Javascript, JQuery, AJAX;
+- Gunicorn = 20.1.0
+- Nginx = 1.19.3
+- AWS
+
 
 ## Описание проекта
 
@@ -49,10 +59,13 @@
 - при добавление / удалении подписки происходит автоматическое добавление / удаление постов из ленты фолловера;
 
 Помимо этого в проекте:
-- развернуто Docker-окружение с PostgreSQL внутри;
 - создана пользовательская manage.py-команда для создания тестовых экземпляров моделей приложений и заполнения ими 
 пустых таблиц БД;
 - произведена оптимизация запросов к базе внутри кода;
+
+Итоговое приложение развернуто на AWS EC2 внутри Docker-контейнера, работает через прокси-сервер Nginx 
+с автоматической настройкой SSL-сертификации через Let's Encrypt. Для обслуживания базы данных PostgreSQL 
+используется AWS RDS, а для хранения и управления созданными Docker-контейнерами используется AWS ECR.
 
 
 ### TODO:
@@ -67,7 +80,11 @@
     - возможность загрузки и воспроизведения видео в качестве вложения поста;
     - обработка отложенных задач с помощью Celery;
 
+
 2. Покрыть написанный код тестами;
+
+### Cхема базы данных
+![Cхема базы данных](database_scheme.png)
 
 ## Установка, настройка и запуск проекта
 - Создайте локально пустую директорию и инициализируйте в ней git-репозиторий:
@@ -78,45 +95,18 @@ git init
 ```
 - Скопируйте репозиторий проекта в созданную директорию:
 ```bash
-https://github.com/romannovikov/instacopy-petproject.git
+git clone https://github.com/romannovikov/instacopy-petproject.git
 ```
 - Настройте и запустите проект с помощью docker-compose:
 ```bash
 # сборка Docker-сервиса
-docker-compose build
+sudo docker-compose build
 # создание исходных таблиц в БД
-docker-compose run --rm app python manage.py makemigrations
-docker-compose run --rm app python manage.py migrate
+sudo docker-compose run --rm app python manage.py makemigrations
+sudo docker-compose run --rm app python manage.py migrate
 # создание тестовых моделей и заполнение таблиц тестовыми данными
-docker-compose run --rm app python manage.py createinitialdata
+sudo docker-compose run --rm app python manage.py createinitialdata
 # запуск Docker-сервиса
-docker-compose up
+sudo docker-compose up -d
 ```
 - В командной строке браузера перейдите по адресу http://0.0.0.0:8000/
-
-При возникновении ошибки "error checking context: 'can't stat '[local path]/data/pgdata''.
-ERROR: Service 'app' failed to build : Build failed" при сборке Docker-образа необходимо запустить все 
-вышеописанные команды c правами суперпользователя. Это связано с тем, что docker-compose, в зависимости от своих настроек, может создать папку
-с БД от имени суперпользователя.
-
-
-## Структура проекта
-
-    ├── instacopy             <- Корневая директория проекта
-    │   ├── manage.py         <- Файл для запуска Django-проекта
-    │   ├── apps              <- Директория с приложениями проекта
-    │   │   ├── accounts      <- Приложение, реализующее функционал для работы с пользователем
-    │   │   └── blog          <- Основное приложение проекта, реализующее функционал блога
-    │   ├── config            <- Директория с файлами конфигурации всего проекта
-    │   ├── media             <- Директория для хранения загружаемых медиафайлов
-    │   │   └── users
-    │   ├── static            <- Директория со статическими файлами
-    │   └── templates         <- Директория с шаблонами страниц
-    │       ├── accounts
-    │       └── blog
-    ├── Dockerfile            <- Скрипт, автоматизирующий процесс построения Docker-контейнера данного приложения
-    ├── docker-compose.yml    <- Скрипт, автоматизирующий процесс управления несколькими Docker-контейнерами (Приложение + PostgreSQL)
-    ├── poetry.lock          
-    ├── pyproject.toml        <- Файл, созданный Poetry, необходимый для контроля зависимостей проекта
-    ├── LICENSE
-    └── README.md             <- Файл README с описанием данного проекта.
