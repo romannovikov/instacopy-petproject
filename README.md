@@ -102,10 +102,10 @@ git clone https://github.com/romannovikov/instacopy-petproject.git
 # сборка Docker-сервиса
 sudo docker-compose build
 # создание исходных таблиц в БД
-sudo docker-compose run --rm app python manage.py makemigrations
-sudo docker-compose run --rm app python manage.py migrate
+sudo docker-compose run --rm web python manage.py makemigrations
+sudo docker-compose run --rm web python manage.py migrate
 # создание тестовых моделей и заполнение таблиц тестовыми данными
-sudo docker-compose run --rm app python manage.py createinitialdata
+sudo docker-compose run --rm web python manage.py createinitialdata
 # запуск Docker-сервиса
 sudo docker-compose up -d
 ```
